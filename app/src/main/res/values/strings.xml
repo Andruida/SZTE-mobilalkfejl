@@ -8,4 +8,10 @@
     <string name="login_page_name">Bejelentkezés</string>
     <string name="register_page_name">Regisztráció</string>
     <string name="passwordAgain">Jelszó újra</string>
+    <string name="google_login_button">Bejelentkezés Google fiókkal</string>
+    <string name="anon_login_button">Bejelentkezés vendégként</string>
+    <string name="login_failed">Bejelentkezés sikertelen!</string>
+    <string name="failed_registration">Sikertelen regisztráció! :c</string>
+    <string name="successful_registration">Sikeres regisztráció!</string>
+    <string name="passwords_do_not_match">A jelszavak nem egyeznek!</string>
 </resources>

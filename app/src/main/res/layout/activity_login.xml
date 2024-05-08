@@ -63,5 +63,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="@string/register_button" />
+
+        <Button
+            android:id="@+id/anonLoginButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="@string/anon_login_button" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

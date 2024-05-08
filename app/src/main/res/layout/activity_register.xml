@@ -60,7 +60,7 @@
             android:id="@+id/registerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="25dp"
             android:text="@string/register_button" />
 
     </LinearLayout>
