@@ -18,7 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import hu.andruida.nezzuk.authentication.LoginActivity;
@@ -35,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
     private TicketListingAdapter mAdapter;
     private ArrayList<TicketListing> mTicketListings;
 
+    private FirebaseFirestore mFirestore;
+    private CollectionReference mTicketListingsRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         if (user == null) {
@@ -69,13 +76,24 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new TicketListingAdapter(this, mTicketListings);
         mRecyclerView.setAdapter(mAdapter);
 
-        mTicketListings.add(new TicketListing("AAA", "Description", "Location", "Date", "Time", "Price", R.drawable.lego, 10));
-        mTicketListings.add(new TicketListing("Title2", "Description", "Location", "Date", "Time", "Price", R.drawable.lego, 10));
-        mTicketListings.add(new TicketListing("Title", "Description", "Location", "Date", "Time", "Price", R.drawable.lego, 10));
-        mTicketListings.add(new TicketListing("Title", "Description", "Location", "Date", "Time", "Price", R.drawable.lego, 10));
-        mAdapter.notifyDataSetChanged();
+        mFirestore = FirebaseFirestore.getInstance();
+
+        mTicketListingsRef = mFirestore.collection("ticket_listings");
+
+        mTicketListingsRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            mTicketListings.clear();
+            for (int i = 0; i < queryDocumentSnapshots.size(); i++) {
+                TicketListing ticketListing = queryDocumentSnapshots.getDocuments().get(i).toObject(TicketListing.class);
+                mTicketListings.add(ticketListing);
+                mAdapter.notifyItemInserted(i);
+            }
+        }).addOnFailureListener(e -> {
+            Log.e(LOG_TAG, "Error getting ticket listings", e);
+        });
+
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

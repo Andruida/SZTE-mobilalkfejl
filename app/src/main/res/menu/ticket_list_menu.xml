@@ -13,8 +13,7 @@
         android:id="@+id/cart"
         android:icon="@drawable/baseline_shopping_cart_24"
         android:title="@string/cart"
-        app:showAsAction="ifRoom"
-        />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/logout"

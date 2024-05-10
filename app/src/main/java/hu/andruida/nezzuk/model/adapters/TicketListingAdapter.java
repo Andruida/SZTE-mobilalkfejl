@@ -106,19 +106,31 @@ public class TicketListingAdapter extends RecyclerView.Adapter<TicketListingAdap
             mTicketImage = itemView.findViewById(R.id.itemImage);
 
             itemView.findViewById(R.id.add_to_cart).setOnClickListener(v -> {
-                notifyDataSetChanged();
+                
             });
         }
 
         public void bindTo(TicketListing currentTicketListing) {
+
+            String description = currentTicketListing.getDescription()
+                    .substring(0, Math.min(currentTicketListing.getDescription().length(), 200));
+            if (description.length() < currentTicketListing.getDescription().length()) {
+                description += "...";
+            }
+
             mTitleText.setText(currentTicketListing.getTitle());
-            mDescriptionText.setText(currentTicketListing.getDescription());
+            mDescriptionText.setText(description);
             mLocationText.setText(currentTicketListing.getLocation());
             mDateText.setText(currentTicketListing.getDate());
             mTimeText.setText(currentTicketListing.getTime());
-            mPriceText.setText(currentTicketListing.getPrice());
+            mPriceText.setText(mContext.getString(R.string.money, currentTicketListing.getPrice()));
 
-            Glide.with(mContext).load(currentTicketListing.getImageResource()).into(mTicketImage);
+
+            Glide.with(mContext)
+                    .load(currentTicketListing.getImageUrl())
+                    .error(R.drawable.ic_launcher_background)
+                    .centerCrop()
+                    .into(mTicketImage);
         }
     }
 }

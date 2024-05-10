@@ -6,20 +6,38 @@ public class TicketListing {
     private String location;
     private String date;
     private String time;
-    private String price;
-    private int imageResource;
+    private int price;
+    private String imageUrl;
 
     private int amountLeft;
 
-    public TicketListing(String title, String description, String location, String date, String time, String price, int imageResource, int amountLeft) {
+    public TicketListing() {
+    }
+    public TicketListing(String title, String description, String location, String date, String time, String price, String amountLeft, String imageUrl) {
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.date = date;
+        this.time = time;
+        this.price = Integer.parseInt(price);
+        this.amountLeft = Integer.parseInt(amountLeft);
+        this.imageUrl = imageUrl;
+        if (imageUrl.startsWith("http://")) {
+            this.imageUrl =  imageUrl.replace("http://", "https://");
+        }
+    }
+    public TicketListing(String title, String description, String location, String date, String time, int price, String imageUrl, int amountLeft) {
         this.title = title;
         this.description = description;
         this.location = location;
         this.date = date;
         this.time = time;
         this.price = price;
-        this.imageResource = imageResource;
+        this.imageUrl = imageUrl;
         this.amountLeft = amountLeft;
+        if (imageUrl.startsWith("http://")) {
+            this.imageUrl =  imageUrl.replace("http://", "https://");
+        }
     }
 
     public String getTitle() {
@@ -42,12 +60,12 @@ public class TicketListing {
         return time;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public int getImageResource() {
-        return imageResource;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public int getAmountLeft() {

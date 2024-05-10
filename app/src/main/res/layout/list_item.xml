@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="12dp"
+    android:maxWidth="400dp"
     app:cardCornerRadius="8dp">
 
     <RelativeLayout
@@ -13,9 +14,10 @@
         <ImageView
             android:id="@+id/itemImage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:adjustViewBounds="true"
             android:importantForAccessibility="no" />
+
 
         <TextView
             android:id="@+id/itemTitle"
@@ -23,24 +25,47 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/itemImage"
             android:padding="8dp"
+            android:layout_marginStart="8dp"
             android:text="@string/item_placeholder"
             android:textColor="?android:textColorPrimary"
             android:textSize="20sp" />
 
+        <ImageView
+            android:id="@+id/locationIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/itemTitle"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@string/location_icon_description"
+            android:src="@drawable/baseline_location_on_24"
+            />
         <TextView
             android:id="@+id/location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/itemTitle"
+            android:layout_toEndOf="@+id/locationIcon"
             android:padding="8dp"
             android:text="@string/item_placeholder"
             android:textColor="?android:textColorSecondary" />
 
+        <ImageView
+            android:id="@+id/datetimeIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/location"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@string/location_icon_description"
+            android:src="@drawable/baseline_access_time_24"
+            />
         <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/location"
+            android:layout_toEndOf="@+id/datetimeIcon"
             android:padding="8dp"
             android:text="@string/item_placeholder"
             android:textColor="?android:textColorSecondary" />
@@ -62,6 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/date"
             android:padding="8dp"
+            android:layout_marginStart="8dp"
             android:text="@string/item_placeholder" />
 
         <TextView

@@ -19,4 +19,6 @@
     <string name="search">Keresés</string>
     <string name="cart">Kosár</string>
     <string name="logout">Kijelentkezés</string>
+    <string name="money">%d Ft</string>
+    <string name="location_icon_description">Hely ikon</string>
 </resources>
