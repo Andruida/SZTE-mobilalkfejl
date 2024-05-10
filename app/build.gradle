@@ -47,4 +47,13 @@ dependencies {
     androidTestImplementation libs.espresso.core
 
     implementation platform('com.google.firebase:firebase-bom:33.0.0')
+    implementation libs.recyclerview
+    implementation libs.recyclerview.selection
+    implementation libs.glide
+    implementation libs.cardview
+
+    implementation libs.support.v4
+
+
+
 }
