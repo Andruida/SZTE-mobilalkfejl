@@ -13,10 +13,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
-import hu.andruida.nezzuk.MainActivity;
+import hu.andruida.nezzuk.activities.MainActivity;
 import hu.andruida.nezzuk.R;
 
 public class LoginActivity extends AppCompatActivity {

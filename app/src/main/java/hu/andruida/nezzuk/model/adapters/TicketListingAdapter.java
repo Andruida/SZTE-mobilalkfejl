@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -17,7 +18,10 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import hu.andruida.nezzuk.R;
+import hu.andruida.nezzuk.activities.CartActivity;
+import hu.andruida.nezzuk.activities.MainActivity;
 import hu.andruida.nezzuk.model.TicketListing;
+import hu.andruida.nezzuk.viewmodel.CartViewModel;
 
 public class TicketListingAdapter extends RecyclerView.Adapter<TicketListingAdapter.ViewHolder> implements Filterable {
 
@@ -105,9 +109,7 @@ public class TicketListingAdapter extends RecyclerView.Adapter<TicketListingAdap
             mPriceText = itemView.findViewById(R.id.price);
             mTicketImage = itemView.findViewById(R.id.itemImage);
 
-            itemView.findViewById(R.id.add_to_cart).setOnClickListener(v -> {
 
-            });
         }
 
         public void bindTo(TicketListing currentTicketListing) {
@@ -131,6 +133,11 @@ public class TicketListingAdapter extends RecyclerView.Adapter<TicketListingAdap
                     .error(R.drawable.ic_launcher_background)
                     .centerCrop()
                     .into(mTicketImage);
+
+            itemView.findViewById(R.id.add_to_cart).setOnClickListener(v -> {
+                CartViewModel cartViewModel = new ViewModelProvider((MainActivity) mContext).get(CartViewModel.class);
+                cartViewModel.insert(currentTicketListing);
+            });
         }
     }
 }

@@ -1,4 +1,4 @@
-package hu.andruida.nezzuk;
+package hu.andruida.nezzuk.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import hu.andruida.nezzuk.R;
 import hu.andruida.nezzuk.authentication.LoginActivity;
 import hu.andruida.nezzuk.model.TicketListing;
 import hu.andruida.nezzuk.model.adapters.TicketListingAdapter;
@@ -117,6 +118,14 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        MenuItem cartItem = menu.findItem(R.id.cart);
+        cartItem.setOnMenuItemClickListener(item -> {
+            Intent i = new Intent(this, CartActivity.class);
+            startActivity(i);
+            return true;
+        });
+
         return true;
 
     }

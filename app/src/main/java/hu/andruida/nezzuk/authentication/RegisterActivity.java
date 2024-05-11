@@ -16,7 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import hu.andruida.nezzuk.MainActivity;
+import hu.andruida.nezzuk.activities.MainActivity;
 import hu.andruida.nezzuk.R;
 
 public class RegisterActivity extends AppCompatActivity {
