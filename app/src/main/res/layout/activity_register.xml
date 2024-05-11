@@ -7,62 +7,68 @@
     android:layout_height="match_parent"
     tools:context=".authentication.RegisterActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <EditText
-            android:id="@+id/emailEditText"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:autofillHints="emailAddress"
-            android:ems="10"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress" />
-        <EditText
-            android:id="@+id/usernameEditText"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="@dimen/default_top_margin"
-            android:autofillHints="username"
-            android:ems="10"
-            android:hint="@string/username"
-            android:inputType="text" />
-        <EditText
-            android:id="@+id/passwordEditText"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="@dimen/default_top_margin"
-            android:autofillHints="password"
-            android:ems="10"
-            android:hint="@string/password"
-            android:inputType="textPassword" />
-
-        <EditText
-            android:id="@+id/passwordAgainEditText"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="@dimen/default_top_margin"
-            android:autofillHints="password"
-            android:ems="10"
-            android:hint="@string/passwordAgain"
-            android:inputType="textPassword" />
-
-        <Button
-            android:id="@+id/registerButton"
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:text="@string/register_button" />
+            android:paddingTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="vertical"
+            >
 
-    </LinearLayout>
+            <EditText
+                android:id="@+id/emailEditText"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:autofillHints="emailAddress"
+                android:ems="10"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress" />
+            <EditText
+                android:id="@+id/usernameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="@dimen/default_top_margin"
+                android:autofillHints="username"
+                android:ems="10"
+                android:hint="@string/username"
+                android:inputType="text" />
+            <EditText
+                android:id="@+id/passwordEditText"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="@dimen/default_top_margin"
+                android:autofillHints="password"
+                android:ems="10"
+                android:hint="@string/password"
+                android:inputType="textPassword" />
+
+            <EditText
+                android:id="@+id/passwordAgainEditText"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="@dimen/default_top_margin"
+                android:autofillHints="password"
+                android:ems="10"
+                android:hint="@string/passwordAgain"
+                android:inputType="textPassword" />
+
+            <Button
+                android:id="@+id/registerButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="@string/register_button" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

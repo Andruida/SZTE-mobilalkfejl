@@ -106,7 +106,7 @@ public class TicketListingAdapter extends RecyclerView.Adapter<TicketListingAdap
             mTicketImage = itemView.findViewById(R.id.itemImage);
 
             itemView.findViewById(R.id.add_to_cart).setOnClickListener(v -> {
-                
+
             });
         }
 
