@@ -33,15 +33,6 @@
                 android:hint="@string/email"
                 android:inputType="textEmailAddress" />
             <EditText
-                android:id="@+id/usernameEditText"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="@dimen/default_top_margin"
-                android:autofillHints="username"
-                android:ems="10"
-                android:hint="@string/username"
-                android:inputType="text" />
-            <EditText
                 android:id="@+id/passwordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"

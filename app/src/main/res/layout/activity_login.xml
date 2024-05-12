@@ -47,10 +47,10 @@
                 android:id="@+id/usernameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:autofillHints="username"
+                android:autofillHints="emailAddress"
                 android:ems="10"
-                android:hint="@string/username"
-                android:inputType="text" />
+                android:hint="@string/email"
+                android:inputType="textEmailAddress" />
 
             <EditText
                 android:id="@+id/passwordEditText"
