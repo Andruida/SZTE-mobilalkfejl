@@ -136,6 +136,9 @@ public class TicketListingAdapter extends RecyclerView.Adapter<TicketListingAdap
 
             itemView.findViewById(R.id.add_to_cart).setOnClickListener(v -> {
                 CartViewModel cartViewModel = new ViewModelProvider((MainActivity) mContext).get(CartViewModel.class);
+                currentTicketListing.setAmountInCart(currentTicketListing.getAmountInCart() + 1);
+                currentTicketListing.setAmountLeft(currentTicketListing.getAmountLeft() - 1);
+
                 cartViewModel.insert(currentTicketListing);
             });
         }

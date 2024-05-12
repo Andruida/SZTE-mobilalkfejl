@@ -16,22 +16,51 @@ import hu.andruida.nezzuk.repository.OnTicketListingReadyListener;
 
 public class CartViewModel extends AndroidViewModel {
 
-    private CartRepository repository;
+    private final CartRepository repository;
     private final Application application;
     private LiveData<List<TicketListing>> allInCart;
 
     public CartViewModel(@NonNull Application application) {
         super(application);
         this.application = application;
-        this.repository = new CartRepository(application, data ->{});
+        this.repository = new CartRepository(application, data ->{
+            synchronized (this) {
+                if (allInCart == null) {
+                    allInCart = data;
+                }
+            }
+        });
     }
 
     // well that's dumb
     public void getAllInCart(OnAllTicketListingsReadyListener listener) {
-        new CartRepository(application, data -> {
-            allInCart = data;
-            listener.onAllTicketListingsReady(data);
-        });
+        if (allInCart != null) {
+            listener.onAllTicketListingsReady(allInCart);
+        } else {
+            new CartRepository(application, data -> {
+                synchronized (this) {
+                    if (allInCart == null) {
+                        allInCart = data;
+                        listener.onAllTicketListingsReady(data);
+                        return;
+                    }
+                    if (data.getValue() == null) {
+                        listener.onAllTicketListingsReady(data);
+                        return;
+                    }
+                    if (allInCart.getValue() == null) {
+                        allInCart = data;
+                    }
+                    assert allInCart.getValue() != null;
+                    allInCart.getValue().clear();
+                    allInCart.getValue().addAll(data.getValue());
+                    allInCart.notifyAll();
+
+                    listener.onAllTicketListingsReady(data);
+                }
+            });
+
+        }
     }
 
     public void insert(TicketListing ticketListing) {

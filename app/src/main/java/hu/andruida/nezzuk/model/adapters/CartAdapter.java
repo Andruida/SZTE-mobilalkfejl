@@ -4,7 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
@@ -83,8 +85,32 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             location.setText(String.valueOf(currentTicketListing.getLocation()));
 
             itemView.findViewById(R.id.remove_from_cart).setOnClickListener(v -> {
+
                 CartViewModel cartViewModel = new ViewModelProvider((CartActivity) mContext).get(CartViewModel.class);
-                cartViewModel.deleteById(currentTicketListing.getLocalId());
+                if (currentTicketListing.getAmountInCart() > 1) {
+                    cartViewModel.updateAmountInCart(
+                            currentTicketListing.getLocalId(),
+                            currentTicketListing.getAmountInCart() - 1,
+                            currentTicketListing.getAmountLeft() + 1);
+                } else if (currentTicketListing.getAmountInCart() <= 1) {
+                    Animation animation = android.view.animation.AnimationUtils.loadAnimation(mContext, R.anim.slide_out);
+                    itemView.startAnimation(animation);
+                    itemView.postDelayed(() -> {
+                        cartViewModel.deleteById(currentTicketListing.getLocalId());
+                    }, 500);
+                }
+            });
+
+            itemView.findViewById(R.id.add_to_cart).setOnClickListener(v -> {
+                CartViewModel cartViewModel = new ViewModelProvider((CartActivity) mContext).get(CartViewModel.class);
+                if (currentTicketListing.getAmountLeft() >= 1) {
+                    cartViewModel.updateAmountInCart(
+                            currentTicketListing.getLocalId(),
+                            currentTicketListing.getAmountInCart() + 1,
+                            currentTicketListing.getAmountLeft() - 1);
+                } else {
+                    Toast.makeText(mContext, R.string.no_tickets_err, Toast.LENGTH_SHORT).show();
+                }
             });
 
         }

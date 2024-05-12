@@ -79,7 +79,7 @@
             android:layout_below="@id/time"
             android:layout_centerHorizontal="true"
             android:padding="8dp"
-            android:textColor="@color/red"
+            android:textColor="?android:textColorPrimary"
             android:text="@string/item_placeholder"
             android:textSize="20sp" />
 

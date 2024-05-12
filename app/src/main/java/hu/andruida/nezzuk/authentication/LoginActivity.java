@@ -1,10 +1,12 @@
 package hu.andruida.nezzuk.authentication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -14,6 +16,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.AggregateField;
+import com.google.firebase.firestore.AggregateQuerySnapshot;
+import com.google.firebase.firestore.AggregateSource;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import hu.andruida.nezzuk.activities.MainActivity;
 import hu.andruida.nezzuk.R;
@@ -24,6 +30,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText emailEditText;
     private EditText passwordEditText;
+
+    private SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +44,12 @@ public class LoginActivity extends AppCompatActivity {
             return insets;
         });
 
+        sharedPref = getSharedPreferences("hu.andruida.nezzuk", MODE_PRIVATE);
+
         emailEditText = findViewById(R.id.usernameEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
+
+        emailEditText.setText(sharedPref.getString("email", ""));
 
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
@@ -58,6 +70,30 @@ public class LoginActivity extends AppCompatActivity {
 
         findViewById(R.id.loginButton).setOnClickListener(login);
         findViewById(R.id.anonLoginButton).setOnClickListener(loginAsAnon);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("ticket_listings")
+                .whereLessThanOrEqualTo("price", 10000)
+                .aggregate(AggregateField.sum("amountLeft"))
+                .get(AggregateSource.SERVER)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        AggregateQuerySnapshot snapshot = task.getResult();
+                        TextView stat = findViewById(R.id.statText);
+                        Long tickets = (Long) snapshot.get(AggregateField.sum("amountLeft"));
+                        stat.setText(getString(R.string.ticket_stat, tickets));
+                    } else {
+                        Log.e(LOG_TAG, "Failed to get sum of amountLeft", task.getException());
+                    }
+                });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("email", emailEditText.getText().toString());
+        editor.apply();
     }
 
     private void startMainActivity() {

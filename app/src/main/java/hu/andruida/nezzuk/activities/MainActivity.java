@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -20,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -28,6 +32,7 @@ import hu.andruida.nezzuk.R;
 import hu.andruida.nezzuk.authentication.LoginActivity;
 import hu.andruida.nezzuk.model.TicketListing;
 import hu.andruida.nezzuk.model.adapters.TicketListingAdapter;
+import hu.andruida.nezzuk.viewmodel.CartViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseFirestore mFirestore;
     private CollectionReference mTicketListingsRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,16 +87,21 @@ public class MainActivity extends AppCompatActivity {
 
         mTicketListingsRef = mFirestore.collection("ticket_listings");
 
-        mTicketListingsRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
-            mTicketListings.clear();
-            for (int i = 0; i < queryDocumentSnapshots.size(); i++) {
-                TicketListing ticketListing = queryDocumentSnapshots.getDocuments().get(i).toObject(TicketListing.class);
-                mTicketListings.add(ticketListing);
-                mAdapter.notifyItemInserted(i);
-            }
-        }).addOnFailureListener(e -> {
-            Log.e(LOG_TAG, "Error getting ticket listings", e);
-        });
+        mTicketListingsRef
+                .orderBy("date", Query.Direction.ASCENDING)
+                .orderBy("time", Query.Direction.ASCENDING)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    mTicketListings.clear();
+                    for (int i = 0; i < queryDocumentSnapshots.size(); i++) {
+                        TicketListing ticketListing = queryDocumentSnapshots.getDocuments().get(i).toObject(TicketListing.class);
+                        mTicketListings.add(ticketListing);
+                        mAdapter.notifyItemInserted(i);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(LOG_TAG, "Error getting ticket listings", e);
+                });
 
 
     }
@@ -119,13 +130,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        MenuItem cartItem = menu.findItem(R.id.cart);
-        cartItem.setOnMenuItemClickListener(item -> {
-            Intent i = new Intent(this, CartActivity.class);
-            startActivity(i);
-            return true;
-        });
-
         return true;
 
     }
@@ -141,10 +145,44 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return true;
         } else if (itemId == R.id.cart) {
-            Log.i(LOG_TAG, "Cart clicked");
+            Intent i = new Intent(this, CartActivity.class);
+            startActivity(i);
             return true;
 
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        Log.i(LOG_TAG, "onPrepareOptionsMenu");
+        final MenuItem alertMenuItem = menu.findItem(R.id.cart);
+        FrameLayout rootView = (FrameLayout) alertMenuItem.getActionView();
+
+        if (rootView == null) {
+            Log.e(LOG_TAG, "rootView is null");
+            return super.onPrepareOptionsMenu(menu);
+        }
+        FrameLayout redCircle = rootView.findViewById(R.id.view_alert_red_circle);
+        TextView countTextView = rootView.findViewById(R.id.view_alert_count_textview);
+
+        rootView.setOnClickListener(v -> onOptionsItemSelected(alertMenuItem));
+        CartViewModel cartViewModel = new CartViewModel(getApplication());
+
+        Log.i(LOG_TAG, "Setting up cart icon");
+        cartViewModel.getAllInCart(data -> data.observe(this, ticketListings -> {
+            Log.i(LOG_TAG, "Updating cart icon");
+            int cartItems = ticketListings.size();
+            if (0 < cartItems) {
+                countTextView.setText(String.valueOf(cartItems));
+            } else {
+                countTextView.setText("");
+            }
+
+            redCircle.setVisibility((cartItems > 0) ? View.VISIBLE : View.GONE);
+        }));
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
 }
